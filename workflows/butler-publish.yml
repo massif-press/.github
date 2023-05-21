@@ -1,0 +1,39 @@
+# This workflow will run tests using node and then publish a package to itch.io through Butler when a release is created
+# For more information see: https://github.com/yeslayla/butler-publish-itchio-action#readme
+
+name: Butler Publish
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm test
+
+  publish-itchio:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run build
+      - run: echo VERSION=$(jq -j '.version' ./package.json) >> $GITHUB_ENV
+      - name: Butler Push
+        uses: yeslayla/butler-publish-itchio-action@v1.0.3
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          CHANNEL: ${{ vars.BUTLER_CHANNEL }}
+          ITCH_GAME: ${{ vars.ITCH_GAME }}
+          ITCH_USER: ${{ vars.ITCH_USER }}
+          PACKAGE: dist/${{ github.event.repository.name }}-${{ env.VERSION }}.lcp
+          VERSION: ${{ env.VERSION }}
