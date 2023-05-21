@@ -5,6 +5,10 @@ name: Butler Publish
 
 on:
   workflow_call:
+    secrets:
+      BUTLER_CREDENTIALS:
+        description: 'Butler API key tied to a target Itch.io account'
+        required: true
 
 jobs:
   build:
