@@ -24,11 +24,11 @@ jobs:
           CC_DIR_ID: ${{ secrets.CC_DIR_ID }}
         run: |
           # Modify the API endpoint and payload according to your requirements
-          API_ENDPOINT="https://example.com/api"
+          API_ENDPOINT="https://ujgatmvzlg.execute-api.us-east-1.amazonaws.com/prod/update"
           PAYLOAD='{"id": CC_DIR_ID, "version": VERSION}'
 
           # Make the API call using curl (you can use any other tool or language here)
           curl -X POST $API_ENDPOINT \
-            -H "Authorization: Bearer $CC_API_KEY" \
+            -H "x-api-key: $CC_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$PAYLOAD"
