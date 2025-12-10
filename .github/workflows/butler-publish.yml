@@ -33,7 +33,7 @@ jobs:
       - run: npm run build
       - run: echo VERSION=$(jq -j '.version' ./package.json) >> $GITHUB_ENV
       - name: Butler Push
-        uses: yeslayla/butler-publish-itchio-action@v1.0.3
+        uses: yeslayla/butler-publish-itchio-action@master
         env:
           BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           CHANNEL: ${{ vars.BUTLER_CHANNEL }}
